@@ -2,7 +2,7 @@
 import { DataSource } from 'typeorm';
 import 'dotenv/config';
 
-export default new DataSource({
+export const AppDataSource = new DataSource({
   type: 'mssql',
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
