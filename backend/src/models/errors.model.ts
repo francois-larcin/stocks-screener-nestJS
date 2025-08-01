@@ -19,9 +19,9 @@ export class InvalidLoginException extends Error {
   }
 }
 
-export class NotFoundException extends Error {
+export class ResourceNotFoundException extends Error {
   constructor() {
     super(`Not found`);
-    this.name = 'NotFoundException';
+    this.name = 'ResourceNotFoundException';
   }
 }

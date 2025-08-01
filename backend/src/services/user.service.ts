@@ -4,6 +4,11 @@ import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { RoleEntity } from 'src/entities/role.entity';
+import {
+  EmailAlreadyExistsException,
+  InvalidLoginException,
+  UsernameAlreadyExistsException,
+} from 'src/models/errors.model';
 
 @Injectable()
 export class UserService {
@@ -16,14 +21,26 @@ export class UserService {
   ) {}
 
   async create(newUser: UserEntity) {
+    newUser.username = newUser.username.toLowerCase();
+    newUser.email = newUser.email.toLowerCase();
+
+    //* Vérification du username
     const existingUsername = await this.userRepository.findOne({
-      where: {
-        username: newUser.username.toLowerCase(),
-      },
+      where: { username: newUser.username },
     });
 
     if (existingUsername) {
-      throw new Error('Username already exists');
+      throw new UsernameAlreadyExistsException(newUser.username);
+    }
+
+    //* Vérification de l'email
+
+    const existingEmail = await this.userRepository.findOne({
+      where: { email: newUser.email },
+    });
+
+    if (existingEmail) {
+      throw new EmailAlreadyExistsException(newUser.email);
     }
 
     //* Hash du password
@@ -50,7 +67,7 @@ export class UserService {
 
     const isValidPassword = await bcrypt.compare(password, existingUser.password);
     if (!isValidPassword) {
-      throw new Error('Invalid login ');
+      throw new InvalidLoginException();
     }
     return existingUser;
   }

@@ -1,17 +1,15 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-
-import { AppController } from './controllers/app.controller';
-import { AppService } from './app.service';
 import { UserController } from './controllers/auth.controller';
 
 import { UserEntity } from './entities/user.entity';
 import { RoleEntity } from './entities/role.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from './services/user.service';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 
 @Module({
   imports: [
@@ -47,8 +45,15 @@ import { UserService } from './services/user.service';
 
     // Charger les entités pour DI dans les services
     TypeOrmModule.forFeature([UserEntity, RoleEntity]),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [UserController],
+  providers: [UserService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}

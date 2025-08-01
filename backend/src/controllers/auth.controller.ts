@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginFormDto, AuthRegisterFormDto } from 'src/dtos/auth.form.dto';
 import { AuthRegisterFormDtoToUserEntity } from 'src/mappers/user.mappers';
@@ -29,5 +29,10 @@ export class UserController {
     });
 
     return { token, user };
+  }
+
+  @Get('ping')
+  ping() {
+    return { message: 'API fonctionnelle' };
   }
 }
