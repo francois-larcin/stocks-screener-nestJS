@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components";
 import { useState } from "react";
-import { Input } from "../../components/input";
+
+import { API_URL } from "../../config/api";
+import { Input } from "../../components/Input";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
@@ -10,10 +12,20 @@ export default function RegisterForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = () => {
-    console.log("Nouvelle inscription :", email, username, password);
+  const handleRegister = async () => {
+    //? Call API
 
-    navigate("/dashboard");
+    const response = await fetch(`${API_URL}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, username, password }),
+    });
+
+    if (response.ok) {
+      navigate("/dashboard");
+    } else {
+      alert("Erreur lors de l'inscription");
+    }
   };
 
   return (

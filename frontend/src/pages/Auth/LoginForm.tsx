@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "../../components";
 import { useNavigate } from "react-router-dom";
-import { Input } from "../../components/input";
+import { Input } from "../../components/Input";
 
 export default function LoginPage() {
   const navigate = useNavigate();
