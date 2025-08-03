@@ -1,9 +1,17 @@
+import { Link } from "react-router-dom";
+
 type ButtonColor = "red" | "blue" | "green" | "orange" | "yellow";
+type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps = {
   label: string;
   color?: ButtonColor;
+  size?: ButtonSize;
+  type?: "button" | "submit" | "reset";
   onClick?: () => void;
+  disabled?: boolean;
+  fullWidth?: boolean;
+  to?: string; //* Permet la navigation
 };
 
 const colorClasses: Record<ButtonColor, string> = {
@@ -14,11 +22,45 @@ const colorClasses: Record<ButtonColor, string> = {
   yellow: "bg-yellow-400 text-black hover:bg-yellow-500",
 };
 
-export function Button({ label, color = "blue", onClick }: ButtonProps) {
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: "py-1 px-2 text-sm",
+  md: "py-2 px-4 text-base",
+  lg: "py-3 px-6 text-lg",
+};
+
+export function Button({
+  label,
+  color = "blue",
+  size = "md",
+  type = "button",
+  onClick,
+  disabled = false,
+  fullWidth = false,
+  to,
+}: ButtonProps) {
+  const classes = `
+        ${colorClasses[color]}
+        ${sizeClasses[size]}
+        rounded-lg transition
+        ${fullWidth ? "w-full" : ""}
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""}`;
+
+  //* Si to === true alors on rend un <Link> sinon un <button>
+
+  if (to) {
+    return (
+      <Link to={to} className={classes}>
+        {label}
+      </Link>
+    );
+  }
+
   return (
     <button
+      type={type}
       onClick={onClick}
-      className={`${colorClasses[color]} py-2 px-4 rounded-lg transition`}
+      disabled={disabled}
+      className={classes}
     >
       {label}
     </button>
