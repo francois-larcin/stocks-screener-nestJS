@@ -2,27 +2,44 @@ import { useState } from "react";
 import { Button } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../../components/Input";
+import { API_URL } from "../../config/api";
+import { Form } from "../../components/Form";
 
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const [identifier, setIdentifier] = useState(""); //? email ou username
+  const [credentials, setCredentials] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    console.log("Tentative de connexion avec", identifier, password);
+  const handleLogin = async () => {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ credentials, password }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Erreur de connexion");
+    }
+
+    const data = await response.json();
+    localStorage.setItem("token", data.token);
 
     navigate("/dashboard"); // ✅ Redirection après connexion
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-      <h1 className="text-2xl mb-4">Connexion</h1>
-
+    <Form
+      title="Connexion"
+      onSubmit={handleLogin}
+      submitLabel="Se connecter"
+      submitColor="blue"
+    >
       <Input
         type="credentials"
-        value={identifier}
-        onChange={setIdentifier}
+        value={credentials}
+        onChange={setCredentials}
         placeholder="Email ou nom d'utilisateur"
         required
       />
@@ -34,8 +51,6 @@ export default function LoginPage() {
         placeholder="Mot de passe"
         required
       />
-
-      <Button label="Se connecter" color="blue" onClick={handleLogin} />
-    </div>
+    </Form>
   );
 }

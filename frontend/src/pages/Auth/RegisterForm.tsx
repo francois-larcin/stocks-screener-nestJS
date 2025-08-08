@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "../../components";
 import { useState } from "react";
-
+import { Form } from "../../components/Form";
 import { API_URL } from "../../config/api";
 import { Input } from "../../components/Input";
 
@@ -14,24 +13,26 @@ export default function RegisterForm() {
 
   const handleRegister = async () => {
     //? Call API
-
     const response = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, username, password }),
     });
 
-    if (response.ok) {
-      navigate("/dashboard");
-    } else {
-      alert("Erreur lors de l'inscription");
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
     }
+    navigate("/dashboard");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-4">
-      <h1 className="text-2xl mb-4">Créer un compte</h1>
-
+    <Form
+      title="Créer un compte"
+      onSubmit={handleRegister}
+      submitLabel="S'inscrire"
+      submitColor="green"
+    >
       <Input
         type="email"
         value={email}
@@ -53,8 +54,6 @@ export default function RegisterForm() {
         placeholder="Mot de passe"
         required
       />
-
-      <Button label="Valider" color="green" onClick={handleRegister} />
-    </div>
+    </Form>
   );
 }
