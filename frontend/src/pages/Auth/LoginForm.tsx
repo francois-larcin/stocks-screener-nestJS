@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { API_URL } from "../../config/api";
@@ -45,7 +44,7 @@ export default function LoginPage() {
       />
 
       <Input
-        type="credentials"
+        type="password"
         value={password}
         onChange={setPassword}
         placeholder="Mot de passe"

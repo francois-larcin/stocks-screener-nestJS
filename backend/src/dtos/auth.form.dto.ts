@@ -23,5 +23,6 @@ export class AuthLoginFormDto {
   credentials: string;
 
   @IsString()
+  // @IsStrongPassword()
   password: string;
 }
