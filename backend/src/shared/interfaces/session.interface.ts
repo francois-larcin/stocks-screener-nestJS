@@ -1,6 +1,6 @@
 import { RoleEnum } from '../enum/role.enum';
 
 export interface Session {
-  id: string;
-  role: RoleEnum;
+  id?: string;
+  role?: RoleEnum;
 }
