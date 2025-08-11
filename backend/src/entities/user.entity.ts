@@ -17,7 +17,7 @@ export class UserEntity {
   @Column({ length: 255, unique: true })
   username: string;
 
-  @Column({ length: 255 })
+  @Column({ length: 255, select: false })
   password: string;
 
   @Column({ length: 255, unique: true })

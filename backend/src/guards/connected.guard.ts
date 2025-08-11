@@ -10,7 +10,7 @@ export class ConnectedGuard implements CanActivate {
 
     const session = request.session;
 
-    if (!session) {
+    if (!session || !session.id) {
       return false;
     }
     return true;

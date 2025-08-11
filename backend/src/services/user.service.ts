@@ -10,6 +10,8 @@ import {
   UsernameAlreadyExistsException,
 } from 'src/models/errors.model';
 
+export type SafeUser = Omit<UserEntity, 'password'>;
+
 @Injectable()
 export class UserService {
   constructor(
@@ -62,7 +64,7 @@ export class UserService {
 
     //? L'utilisateur peut se connecter via username OU email
     if (!existingUser) {
-      throw new Error('Invalid email or username');
+      throw new InvalidLoginException();
     }
 
     const isValidPassword = await bcrypt.compare(password, existingUser.password);
@@ -70,5 +72,22 @@ export class UserService {
       throw new InvalidLoginException();
     }
     return existingUser;
+  }
+
+  async findByIdWithRole(id: string): Promise<{ user: Omit<UserEntity, 'password'> } | null> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['role'],
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
+        role: { id: true, name: true }, // limite ce que tu exposes sur le rôle
+      },
+    });
+
+    return user ? { user } : null;
   }
 }

@@ -1,10 +1,12 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
 import { AuthLoginFormDto, AuthRegisterFormDto } from 'src/dtos/auth.form.dto';
-
 import { AuthRegisterFormDtoToUserEntity } from 'src/mappers/user.mappers';
 import { UserService } from 'src/services/user.service';
+import { RoleEnum } from 'src/shared/enum/role.enum';
+import { ConnectedGuard } from 'src/guards/connected.guard';
+import { Session } from 'src/shared/interfaces/session.interface';
+import { Request } from 'express';
 
 @Controller('auth')
 export class UserController {
@@ -22,26 +24,38 @@ export class UserController {
   }
 
   @Post('login')
-  async login(@Body() body: AuthLoginFormDto) {
-    const user = await this.userService.login(body.credentials, body.password);
+  async login(@Body() dto: AuthLoginFormDto) {
+    const user = await this.userService.login(dto.credentials, dto.password);
 
-    const token = this.jwtService.sign({
+    //?Sécuriser la dérivation du rôle
+    const roleId = Number(user.role?.id);
+    const role: RoleEnum = roleId === RoleEnum.ADMIN ? RoleEnum.ADMIN : RoleEnum.USER;
+
+    //? payload du middleware = Session
+    const payload: Session = {
       id: user.id,
-      role: user.role.name,
-    });
+      role,
+    };
 
-    return { token, user };
+    const token = this.jwtService.sign(payload, { expiresIn: '15m' });
+    return {
+      ok: true,
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role, // num enum (1/2)
+      },
+    };
   }
 
-  @Get('ping')
-  ping() {
-    return { message: 'API fonctionnelle' };
+  @UseGuards(ConnectedGuard)
+  @Get('me')
+  async me(@Req() req: Request & { session: Session }) {
+    if (!req.session.id) {
+      throw new UnauthorizedException('No user ID in session');
+    }
+    return this.userService.findByIdWithRole(req.session.id);
   }
-
-  // @UseGuards(ConnectedGuard)
-  // @Get('me')
-  // async me(@Req() req: Request & { session: Session }) {
-  //   const user = await this.userService.findByIdWithRole(req.session.id);
-  //   return { user };
-  // }
 }
