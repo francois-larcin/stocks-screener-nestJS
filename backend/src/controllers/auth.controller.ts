@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  Param,
+  Post,
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthLoginFormDto, AuthRegisterFormDto } from 'src/dtos/auth.form.dto';
 import { AuthRegisterFormDtoToUserEntity } from 'src/mappers/user.mappers';
@@ -62,5 +72,25 @@ export class UserController {
       throw new UnauthorizedException('No user ID in session');
     }
     return this.userService.findByIdWithRole(req.session.id);
+  }
+
+  @UseGuards(ConnectedGuard)
+  @Get('admin-area')
+  adminOnly(@Req() req: Request & { session: Session }) {
+    if (req.session.role !== RoleEnum.ADMIN) {
+      throw new ForbiddenException();
+    }
+    return { ok: true };
+  }
+
+  @UseGuards(ConnectedGuard)
+  @Get(':id')
+  getUser(@Param('id') id: string, @Req() req: Request & { session: Session }) {
+    const isSelf = req.session.id === id;
+    const isAdmin = req.session.role === RoleEnum.ADMIN;
+    if (!isSelf && !isAdmin) {
+      throw new ForbiddenException();
+    }
+    return this.userService.findByIdWithRole(id);
   }
 }
