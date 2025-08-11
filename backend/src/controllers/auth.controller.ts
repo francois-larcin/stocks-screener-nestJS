@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 import { AuthLoginFormDto, AuthRegisterFormDto } from 'src/dtos/auth.form.dto';
+
 import { AuthRegisterFormDtoToUserEntity } from 'src/mappers/user.mappers';
 import { UserService } from 'src/services/user.service';
 
@@ -35,4 +37,11 @@ export class UserController {
   ping() {
     return { message: 'API fonctionnelle' };
   }
+
+  // @UseGuards(ConnectedGuard)
+  // @Get('me')
+  // async me(@Req() req: Request & { session: Session }) {
+  //   const user = await this.userService.findByIdWithRole(req.session.id);
+  //   return { user };
+  // }
 }
