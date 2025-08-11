@@ -29,7 +29,12 @@ export class UserController {
 
     //?Sécuriser la dérivation du rôle
     const roleId = Number(user.role?.id);
-    const role: RoleEnum = roleId === RoleEnum.ADMIN ? RoleEnum.ADMIN : RoleEnum.USER;
+    const idToEnum: Record<number, RoleEnum> = {
+      [RoleEnum.ADMIN]: RoleEnum.ADMIN,
+      [RoleEnum.USER]: RoleEnum.USER,
+    };
+
+    const role: RoleEnum = idToEnum[roleId] ?? RoleEnum.USER;
 
     //? payload du middleware = Session
     const payload: Session = {
@@ -45,7 +50,7 @@ export class UserController {
         id: user.id,
         username: user.username,
         email: user.email,
-        role, // num enum (1/2)
+        role,
       },
     };
   }
