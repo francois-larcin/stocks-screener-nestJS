@@ -56,11 +56,14 @@ export class UserService {
   }
 
   async login(credentials: string, password: string) {
-    const existingUser = await this.userRepository.findOne({
-      where: [{ username: credentials.toLowerCase() }, { email: credentials.toLowerCase() }],
-      //? Inclure le rôle dans le token
-      relations: ['role'],
-    });
+    const cred = credentials.toLowerCase();
+
+    const existingUser = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.role', 'r')
+      .where('LOWER(user.username) = :cred OR LOWER(user.email) = :cred', { cred })
+      .addSelect('user.password')
+      .getOne();
 
     //? L'utilisateur peut se connecter via username OU email
     if (!existingUser) {

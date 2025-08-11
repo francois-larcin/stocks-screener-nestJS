@@ -65,6 +65,12 @@ export class UserController {
     };
   }
 
+  @Post('logout')
+  logout() {
+    // rien à faire côté serveur en JWT stateless
+    return { ok: true };
+  }
+
   @UseGuards(ConnectedGuard)
   @Get('me')
   async me(@Req() req: Request & { session: Session }) {
