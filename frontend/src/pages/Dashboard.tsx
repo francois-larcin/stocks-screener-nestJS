@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router";
 import { ConfirmButton } from "../components/ConfirmButton";
+import { useProfile } from "../hooks/user/useProfile";
 
 export default function DashboardPage() {
+  const { user, loading } = useProfile();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -9,6 +11,9 @@ export default function DashboardPage() {
     localStorage.removeItem("token");
     navigate("/");
   };
+
+  if (loading) return <p>Chargement...</p>;
+  if (!user) return <p>Non connecté</p>;
 
   return (
     <div className="p-6">
