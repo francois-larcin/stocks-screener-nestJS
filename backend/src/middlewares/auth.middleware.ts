@@ -1,4 +1,9 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NestMiddleware,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { NextFunction, Request, Response } from 'express';
@@ -16,7 +21,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     const [type, token] = auth.split(' ');
     if (!type || type.toLowerCase() !== 'bearer') {
-      return res.status(400).json({ error: 'Invalid Authorization header' });
+      throw new BadRequestException('Invalid Authorization header');
     }
 
     try {
@@ -24,7 +29,7 @@ export class AuthMiddleware implements NestMiddleware {
       req.session = session;
       return next();
     } catch {
-      return res.status(401).json({ error: 'Invalid or expired token' });
+      throw new UnauthorizedException('Invalid or expired token');
     }
   }
 }

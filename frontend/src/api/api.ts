@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 //* Creation d'une instance Axios utilisée pour tous les appels HTTP
 
 export const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/auth`,
+  baseURL: `${import.meta.env.VITE_API_URL}`,
 });
 
 //? Interceptor requêtes => ajoute le token
