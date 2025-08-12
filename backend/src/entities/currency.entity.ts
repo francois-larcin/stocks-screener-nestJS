@@ -1,0 +1,15 @@
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity({ name: 'currencies' })
+export class CurrencyEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ length: 50, unique: true })
+  name: string;
+
+  @Column({ length: 50, unique: true })
+  code: string;
+
+  //? Relation avec la table stocks
+}
