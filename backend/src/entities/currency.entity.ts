@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { StockEntity } from './stock.entity';
 
 @Entity({ name: 'currencies' })
 export class CurrencyEntity {
@@ -12,4 +13,7 @@ export class CurrencyEntity {
   code: string;
 
   //? Relation avec la table stocks
+
+  @OneToMany(() => StockEntity, (s) => s.currency)
+  stocks: StockEntity[];
 }

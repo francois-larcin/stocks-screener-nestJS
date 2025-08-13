@@ -1,39 +1,46 @@
-import { Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { StockEntity } from './stock.entity';
 
-@Entity({ name: 'stocks' })
+@Entity({ name: 'financial_ratios' })
 export class FinancialRatioEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id_financial_ratios: number;
 
-  @Column({ type: 'datetime' })
-  ratio_date: Date;
+  @Column({ type: 'date', nullable: false })
+  ratio_date: string; // YYYY-MM-DD
 
-  @Column()
-  pe_ratio: number;
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  pe_ratio: string | null;
 
-  @Column()
-  peg_ratio: number;
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  peg_ratio: string | null;
 
-  @Column()
-  ebitda: number;
+  @Column({ type: 'decimal', precision: 18, scale: 2, nullable: true })
+  ebitda: string | null;
 
-  @Column()
-  net_income_growth: number;
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
+  net_income_growth: string | null;
 
-  @Column()
-  cashflow_growth: number;
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
+  cashflow_growth: string | null;
 
-  @Column()
-  net_margin: number;
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
+  net_margin: string | null;
 
-  @Column()
-  gross_margin: number;
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
+  gross_margin: string | null;
 
-  @Column()
-  capex: number;
+  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
+  operating_margin: string | null;
 
-  @UpdateDateColumn({ type: 'datetime' })
-  stock_date: Date;
+  @Column({ type: 'decimal', precision: 18, scale: 2, nullable: true })
+  capex: string | null;
+
+  @Column({ type: 'datetime2', nullable: true })
+  stock_date: Date | null;
 
   //? Relation avec la table stocks
+  @ManyToOne(() => StockEntity, (s) => s.ratios, { onDelete: 'CASCADE', nullable: false })
+  @JoinColumn({ name: 'id_stocks' })
+  stock: StockEntity;
 }
