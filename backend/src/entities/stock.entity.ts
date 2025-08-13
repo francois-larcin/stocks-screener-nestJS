@@ -25,10 +25,10 @@ export class StockEntity {
   name: string;
 
   @Column({ length: 100, nullable: true })
-  sector: string | null;
+  sector: string;
 
   @Column({ length: 50, nullable: true })
-  industry: string | null;
+  industry: string;
 
   // Market cap: préfère DECIMAL plutôt que string; ajuste la précision si besoin
   @Column({ type: 'decimal', precision: 18, scale: 2, nullable: true })
@@ -38,14 +38,14 @@ export class StockEntity {
   created_at: Date;
 
   // N -> 1 : currency
-  @ManyToOne(() => CurrencyEntity, (c) => c.stocks, { nullable: false, onDelete: 'RESTRICT' })
+  @ManyToOne(() => CurrencyEntity, (c) => c.stocks, { nullable: false, onDelete: 'NO ACTION' })
   @JoinColumn({ name: 'id_currencies' })
   currency: CurrencyEntity;
 
   // N -> 1 : stock exchange
   @ManyToOne(() => StockExchangeEntity, (se) => se.stocks, {
     nullable: false,
-    onDelete: 'RESTRICT',
+    onDelete: 'NO ACTION',
   })
   @JoinColumn({ name: 'id_stock_exchanges' })
   exchange: StockExchangeEntity;

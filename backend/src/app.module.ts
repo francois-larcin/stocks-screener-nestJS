@@ -10,6 +10,12 @@ import { RoleEntity } from './entities/role.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { UserService } from './services/user.service';
 import { AuthMiddleware } from './middlewares/auth.middleware';
+import { CurrencyEntity } from './entities/currency.entity';
+import { FavoriteEntity } from './entities/favorite.entity';
+import { StockEntity } from './entities/stock.entity';
+import { StockExchangeEntity } from './entities/stock-exchange.entity';
+import { FinancialRatioEntity } from './entities/financial-ratios.entity';
+import { FavoriteStockEntity } from './entities/favorite-stock.entity';
 
 @Module({
   imports: [
@@ -40,11 +46,29 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
       },
       logging: true,
       synchronize: true, // ⚠️ Crée automatiquement les tables
-      entities: [UserEntity, RoleEntity],
+      entities: [
+        UserEntity,
+        RoleEntity,
+        CurrencyEntity,
+        FavoriteEntity,
+        StockEntity,
+        StockExchangeEntity,
+        FinancialRatioEntity,
+        FavoriteStockEntity,
+      ],
     }),
 
     // Charger les entités pour DI dans les services
-    TypeOrmModule.forFeature([UserEntity, RoleEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      RoleEntity,
+      CurrencyEntity,
+      FavoriteEntity,
+      StockEntity,
+      StockExchangeEntity,
+      FinancialRatioEntity,
+      FavoriteEntity,
+    ]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
