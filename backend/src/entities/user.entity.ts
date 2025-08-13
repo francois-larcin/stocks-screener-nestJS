@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { RoleEntity } from './role.entity';
+import { FavoriteEntity } from './favorite.entity';
 
 @Entity({ name: 'user' })
 export class UserEntity {
@@ -33,4 +35,8 @@ export class UserEntity {
   @ManyToOne(() => RoleEntity)
   @JoinColumn({ name: 'role_id' })
   role: RoleEntity;
+
+  //? Relation avec la table Favorites
+  @OneToMany(() => FavoriteEntity, (f) => f.user)
+  favorites: FavoriteEntity[];
 }

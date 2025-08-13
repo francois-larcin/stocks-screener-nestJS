@@ -7,7 +7,8 @@ export class FinancialRatioEntity {
   id_financial_ratios: number;
 
   @Column({ type: 'date', nullable: false })
-  ratio_date: string; // YYYY-MM-DD
+  //* Année de l'exercice comptable sur laquelle se basent les ratios
+  ratio_date: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   pe_ratio: string | null;
@@ -37,6 +38,7 @@ export class FinancialRatioEntity {
   capex: string | null;
 
   @Column({ type: 'datetime2', nullable: true })
+  //* date/heure de la valeur boursière ou du cours associé à ces ratios.
   stock_date: Date | null;
 
   //? Relation avec la table stocks
