@@ -16,6 +16,7 @@ import { StockEntity } from './entities/stock.entity';
 import { StockExchangeEntity } from './entities/stock-exchange.entity';
 import { FinancialRatioEntity } from './entities/financial-ratios.entity';
 import { FavoriteStockEntity } from './entities/favorite-stock.entity';
+import { FavoritesController } from './controllers/favorites.controller';
 
 @Module({
   imports: [
@@ -73,7 +74,7 @@ import { FavoriteStockEntity } from './entities/favorite-stock.entity';
       rootPath: join(__dirname, '..', 'public'),
     }),
   ],
-  controllers: [UserController],
+  controllers: [UserController, FavoritesController],
   providers: [UserService],
 })
 export class AppModule {
