@@ -37,7 +37,11 @@ export class FavoriteService {
     return stock;
   }
 
-  async toggleSymbol(userId: string, symbol: string) {
+  //? Ajout/suppression d'une action
+  async toggleSymbol(
+    userId: string,
+    symbol: string,
+  ): Promise<{ ok: boolean; added?: boolean; removed?: boolean; symbol: string }> {
     const fav = await this.ensureUserFavoriteList(userId);
     const stock = await this.updateInsertStockBySymbol(symbol);
 
@@ -47,7 +51,7 @@ export class FavoriteService {
         favorite: { id_favorites: fav.id_favorites },
         stock: { id: stock.id },
       },
-      relations: ['favorites', 'stock'],
+      relations: ['favorite', 'stock'],
     });
 
     if (existing) {
@@ -64,12 +68,51 @@ export class FavoriteService {
     return { ok: true, added: true, symbol: stock.symbol };
   }
 
-  async returnList(userId: string): Promise<StockEntity[]> {
+  async getFavoritesByUser(userId: string): Promise<StockEntity[]> {
     const fav = await this.favRepo.findOne({
       where: { user: { id: userId } },
       relations: ['favoriteStocks', 'favoriteStocks.stock'],
       order: { id_favorites: 'DESC' },
     });
     return fav ? fav.favoriteStocks.map((favStock) => favStock.stock) : [];
+  }
+
+  //? Vider une liste mais en laissant la structure existante
+
+  async clearFavorites(userId: string): Promise<{ ok: boolean; cleared: number }> {
+    const fav = await this.favRepo.findOne({
+      where: { user: { id: userId } },
+      relations: ['favoriteStocks'],
+    });
+
+    if (!fav) {
+      return { ok: true, cleared: 0 };
+    }
+
+    const count = fav.favoriteStocks.length;
+    if (count > 0) {
+      await this.favStockRepo.remove(fav.favoriteStocks);
+    }
+    //* count = cb d'actions enlevées de la liste
+    return { ok: true, cleared: count };
+  }
+
+  //? Supprimer complétement une liste
+
+  async deleteFavoriteList(
+    userId: string,
+    listId: number,
+  ): Promise<{ ok: boolean; deleted: boolean }> {
+    const fav = await this.favRepo.findOne({
+      where: { id_favorites: listId, user: { id: userId } },
+    });
+
+    if (!fav) {
+      return { ok: false, deleted: false };
+    }
+
+    await this.favRepo.remove(fav);
+
+    return { ok: true, deleted: true };
   }
 }
