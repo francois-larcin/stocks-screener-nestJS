@@ -37,7 +37,18 @@ export class FavoriteService {
     return stock;
   }
 
-  //? Ajout/suppression d'une action
+  //? Ajout d'une action via son symbol
+
+  // async addStockToFavList(userId: string, symbol: string): Promise<AddedStockToFav> {
+  //   const [fav, stock] = await Promise.all([
+  //     this.ensureUserFavoriteList(userId),
+  //     this.updateInsertStockBySymbol(symbol),
+  //   ]);
+
+  //   const existing = await this.favStockRepo.find
+  // }
+
+  //? Suppression d'une action via son symbol
   async toggleSymbol(
     userId: string,
     symbol: string,
