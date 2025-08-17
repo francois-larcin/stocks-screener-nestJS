@@ -5,22 +5,23 @@
 
 export class FavoriteAddedResultDto {
   ok!: true;
-  added!: boolean; // true si ajouté, false si déjà présent
+  added!: boolean;
   symbol!: string;
+  listId!: number;
 }
-
 export class FavoriteRemovedResultDto {
   ok!: true;
-  removed!: boolean; // true si supprimé, false si déjà absent
+  removed!: boolean;
   symbol!: string;
+  listId!: number;
 }
-
 export class FavoriteClearedResultDto {
   ok!: true;
-  cleared!: number; // nb d’actions retirées
+  cleared!: number;
+  listId!: number;
 }
-
 export class FavoriteListDeletedResultDto {
   ok!: true;
   deleted!: boolean;
+  listId!: number;
 }
