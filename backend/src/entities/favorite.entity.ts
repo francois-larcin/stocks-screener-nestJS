@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -13,6 +14,9 @@ import { FavoriteStockEntity } from './favorite-stock.entity';
 export class FavoriteEntity {
   @PrimaryGeneratedColumn('increment')
   id_favorites: number;
+
+  @Column({ type: 'varchar', length: 50, unique: true, nullable: true })
+  name: string;
 
   @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;

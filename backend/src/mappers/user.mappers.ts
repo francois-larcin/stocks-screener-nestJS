@@ -1,4 +1,4 @@
-import { AuthRegisterFormDto } from 'src/dtos/Auth/auth.form.dto';
+import { AuthRegisterFormDto } from 'src/dtos/auth/auth.form.dto';
 import { UserEntity } from 'src/entities/user.entity';
 
 //DTO => Entity

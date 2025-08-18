@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthLoginFormDto, AuthRegisterFormDto } from 'src/dtos/Auth/auth.form.dto';
+import { AuthLoginFormDto, AuthRegisterFormDto } from 'src/dtos/auth/auth.form.dto';
 import { AuthRegisterFormDtoToUserEntity } from 'src/mappers/user.mappers';
 import { UserService } from 'src/services/user.service';
 import { RoleEnum } from 'src/shared/enum/role.enum';
