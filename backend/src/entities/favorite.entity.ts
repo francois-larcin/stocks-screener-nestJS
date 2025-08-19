@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { FavoriteStockEntity } from './favorite-stock.entity';
+import { FavStockEntity } from './favorite-stock.entity';
 
 @Entity({ name: 'favorites' })
 export class FavoriteEntity {
@@ -25,6 +25,6 @@ export class FavoriteEntity {
   @JoinColumn({ name: 'id_users' })
   user: UserEntity;
 
-  @OneToMany(() => FavoriteStockEntity, (fs) => fs.favorite, { cascade: true })
-  favoriteStocks: FavoriteStockEntity[];
+  @OneToMany(() => FavStockEntity, (fs) => fs.favorite, { cascade: true })
+  favoriteStocks: FavStockEntity[];
 }

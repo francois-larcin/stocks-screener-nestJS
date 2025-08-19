@@ -3,7 +3,7 @@ import { StockEntity } from './stock.entity';
 import { FavoriteEntity } from './favorite.entity';
 
 @Entity({ name: 'favorite_stocks' })
-export class FavoriteStockEntity {
+export class FavStockEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 

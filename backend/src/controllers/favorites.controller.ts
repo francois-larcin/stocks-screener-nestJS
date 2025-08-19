@@ -1,5 +1,5 @@
 import { Controller, Param, Req, Post } from '@nestjs/common';
-import { FavoriteService } from 'src/services/favorite.service';
+import { FavoriteService } from 'src/services/fav-list.service';
 import { Session } from 'src/shared/interfaces/session.interface';
 
 @Controller('favorites')

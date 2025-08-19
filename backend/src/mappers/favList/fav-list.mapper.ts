@@ -5,7 +5,7 @@ import { AdminFavListDto, FavListDto } from 'src/dtos/favList/fav-list.dto';
 //? Entity --> DTO
 //* Transformer une entité FavoriteEntity en un DTO FavListDto
 
-export function toFavListSummaryDto(fav: FavoriteEntity): FavListDto {
+export function toFavListDto(fav: FavoriteEntity): FavListDto {
   const dto = new FavListDto();
   dto.id = fav.id_favorites;
   dto.name = fav.name ?? `Favorites #${fav.id_favorites}`;
@@ -16,7 +16,7 @@ export function toFavListSummaryDto(fav: FavoriteEntity): FavListDto {
 }
 
 export function toAdminFavListDto(fav: FavoriteEntity): AdminFavListDto {
-  const baseDto = toFavListSummaryDto(fav);
+  const baseDto = toFavListDto(fav);
 
   return {
     ...baseDto,
