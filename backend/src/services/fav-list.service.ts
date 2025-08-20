@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FavListSummaryDto } from 'src/dtos/favList/fav-list-summary.dto';
 import { AdminFavListDto, FavListDto } from 'src/dtos/favList/fav-list.dto';
@@ -7,6 +7,7 @@ import {
   FavListDeletedResultDto,
 } from 'src/dtos/favorites/fav-action-result.dto';
 import { FavoriteEntity } from 'src/entities/favorite.entity';
+import { UserEntity } from 'src/entities/user.entity';
 import { toAdminFavListDto, toFavListDto } from 'src/mappers/favList/fav-list.mapper';
 import { toFavListSummaryDto } from 'src/mappers/favList/fav-list.summary.mapper';
 import { clearedResult, listDeletedResult } from 'src/mappers/favorites/fav-action.mapper';
@@ -15,6 +16,29 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class FavoriteListService {
   constructor(@InjectRepository(FavoriteEntity) private favRepo: Repository<FavoriteEntity>) {}
+
+  //? Créer une nouvelle liste
+  async createList(userId: string, name?: string): Promise<FavoriteEntity> {
+    if (name) {
+      const existing = await this.favRepo.findOne({
+        where: {
+          user: { id: userId },
+          name: name,
+        },
+      });
+
+      if (existing) {
+        throw new BadRequestException(`La liste "${name}" existe déjà.`);
+      }
+    }
+
+    const fav = this.favRepo.create({
+      user: { id: userId } as UserEntity,
+      name: name ?? undefined, //? optionnel
+    });
+
+    return this.favRepo.save(fav);
+  }
 
   //? Retourner ses propres listes sans le détail des actions
   async getMyLists(userId: string): Promise<FavListSummaryDto[]> {
