@@ -2,9 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FavListSummaryDto } from 'src/dtos/favList/fav-list-summary.dto';
 import { AdminFavListDto, FavListDto } from 'src/dtos/favList/fav-list.dto';
+import {
+  FavListClearedResultDto,
+  FavListDeletedResultDto,
+} from 'src/dtos/favorites/fav-action-result.dto';
 import { FavoriteEntity } from 'src/entities/favorite.entity';
 import { toAdminFavListDto, toFavListDto } from 'src/mappers/favList/fav-list.mapper';
 import { toFavListSummaryDto } from 'src/mappers/favList/fav-list.summary.mapper';
+import { clearedResult, listDeletedResult } from 'src/mappers/favorites/fav-action.mapper';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -32,8 +37,7 @@ export class FavoriteListService {
     return lists.map(toFavListDto);
   }
 
-  //? (Admin) Retourner TOUTES les listes détaillées de tous les users
-
+  //? (Admin) Retourner TOUTES les listes détaillées de tous les users + pagination simple
   async getAllDetailedListAdmin(opts?: {
     page?: number;
     limit?: number;
@@ -55,8 +59,10 @@ export class FavoriteListService {
   async getUserListsAsAdmin(targetUserId: string): Promise<AdminFavListDto[]> {
     const qb = this.favRepo
       .createQueryBuilder('f')
-      .leftJoin('f.user', 'u')
-      .leftJoin('f.favoriteStocks', 'fs')
+      .leftJoin('f.user', 'u') //? L’utilisateur lié à chaque liste (f.user → alias 'u')
+
+      .leftJoin('f.favoriteStocks', 'fs') //? Les actions favorites liées à chaque liste (f.favoriteStocks → alias 'fs')
+
       .where('u.id = :uid', { uid: targetUserId })
       .loadRelationCountAndMap('f.count', 'f.favoriteStocks')
       .orderBy('f.id_favorites', 'DESC');
@@ -65,11 +71,36 @@ export class FavoriteListService {
     return lists.map(toAdminFavListDto); // inclut ownerId
   }
 
-  //? Ajout d'une action via son symbol
+  //? Vider une liste en la conservant
 
-  //? Suppression d'une action via son symbol
+  async clearList(userId: string, listId: number): Promise<FavListClearedResultDto> {
+    const fav = await this.favRepo.findOne({
+      where: { id_favorites: listId, user: { id: userId } },
+      relations: ['favoriteStocks'],
+    });
 
-  //? Vider une liste mais en laissant la structure existante
+    if (!fav) {
+      return clearedResult(listId, 0);
+    }
+
+    const nb = fav.favoriteStocks.length;
+
+    if (nb) {
+      await this.favRepo.manager.remove(fav.favoriteStocks);
+    }
+    return clearedResult(listId, nb);
+  }
 
   //? Supprimer complétement une liste
+
+  async deleteList(userId: string, listId: number): Promise<FavListDeletedResultDto> {
+    const fav = await this.favRepo.findOne({
+      where: { id_favorites: listId, user: { id: userId } },
+    });
+    if (!fav) {
+      return listDeletedResult(listId, false);
+    }
+    await this.favRepo.remove(fav);
+    return listDeletedResult(listId, true);
+  }
 }
