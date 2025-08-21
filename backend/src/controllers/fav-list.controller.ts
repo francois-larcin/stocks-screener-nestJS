@@ -7,10 +7,14 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { RequireRoles } from 'src/decorators/require-role.decorator';
 import { SessionUser } from 'src/decorators/session.decorator';
 import { CreateFavListDto } from 'src/dtos/favList/create-fav-list.dto';
+import { ConnectedGuard } from 'src/guards/connected.guard';
+import { RequireRolesGuard } from 'src/guards/require-role.guard';
 import { toFavListSummaryDto } from 'src/mappers/favList/fav-list.summary.mapper';
 
 import { FavoriteListService } from 'src/services/fav-list.service';
@@ -66,6 +70,8 @@ export class FavListsController {
   //! ------------------------------------------ADMIN--------------------------------------
   //? Afficher TOUTES les listes détaillées + pagination
 
+  @UseGuards(ConnectedGuard, RequireRolesGuard)
+  @RequireRoles('admin')
   @Get('admin/all')
   async getAllDetailedListsAdmin(@Query('page') page?: number, @Query('limit') limit?: number) {
     return this.lists.getAllDetailedListAdmin({ page, limit });
