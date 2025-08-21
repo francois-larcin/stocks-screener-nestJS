@@ -6,6 +6,7 @@ import { join } from 'path';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { FavoriteModule } from './modules/favorites/fav.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { StockModule } from './modules/stock/stock.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { AuthModule } from './modules/auth/auth.module';
 
     AuthModule,
     FavoriteModule,
+    StockModule,
   ],
 })
 export class AppModule {

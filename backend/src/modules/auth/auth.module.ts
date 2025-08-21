@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserController } from 'src/controllers/auth.controller';
 import { RoleEntity } from 'src/entities/role.entity';
 import { UserEntity } from 'src/entities/user.entity';
+import { AuthMiddleware } from 'src/middlewares/auth.middleware';
 import { UserService } from 'src/services/user.service';
 
 @Module({
@@ -15,7 +16,7 @@ import { UserService } from 'src/services/user.service';
     }),
   ],
   controllers: [UserController],
-  providers: [UserService],
-  exports: [UserService],
+  providers: [UserService, AuthMiddleware],
+  exports: [UserService, AuthMiddleware, JwtModule],
 })
 export class AuthModule {}
