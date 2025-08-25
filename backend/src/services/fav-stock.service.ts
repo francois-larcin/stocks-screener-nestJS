@@ -20,12 +20,35 @@ export class FavStockService {
   // TODO Faire un call vers API externe
   private async upsertStockBySymbol(symbol: string): Promise<StockEntity> {
     const sym = symbol.trim().toUpperCase();
-    let stock = await this.stockRepo.findOne({ where: { symbol: sym } });
-    if (!stock) {
-      stock = this.stockRepo.create({ symbol: sym, name: sym }); //TODO remplacer plus tard par le vrai nom
-      stock = await this.stockRepo.save(stock);
+
+    //* 1) existe déjà ?
+    const existing = await this.stockRepo.findOne({ where: { symbol: sym } });
+    if (existing) return existing;
+
+    //* 2) crée minimal, avec valeurs par défaut compatibles front
+    const draft = this.stockRepo.create({
+      symbol: sym,
+      name: sym, // remplacé plus tard par le vrai nom via provider
+      enriched: false,
+      enriched_at: null,
+      last_price: null,
+      last_price_at: null,
+      sector: null,
+      industry: null,
+      market_cap: null,
+      currency: null,
+      exchange: null,
+    });
+
+    try {
+      return await this.stockRepo.save(draft);
+    } catch (e: any) {
+      //* 3) si collision d’unicité (deux requêtes en parallèle), on relit proprement
+      //* MSSQL / TypeORM enverra une erreur contrainte unique -> on récupère l’existant
+      const again = await this.stockRepo.findOne({ where: { symbol: sym } });
+      if (again) return again;
+      throw e;
     }
-    return stock;
   }
 
   //?  Ajouter une action dans une liste
