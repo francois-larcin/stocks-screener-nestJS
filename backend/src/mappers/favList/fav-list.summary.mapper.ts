@@ -8,6 +8,6 @@ export function toFavListSummaryDto(favEnt: FavoriteEntity): FavListSummaryDto {
     id: favEnt.id_favorites,
     name: favEnt.name ?? `Favorites #${favEnt.id_favorites}`,
     createdAt: favEnt.created_at,
-    count: favEnt.favoriteStocks.length ?? 0,
+    count: favEnt.favoriteStocks?.length ?? 0,
   };
 }

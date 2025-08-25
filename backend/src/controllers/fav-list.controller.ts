@@ -19,7 +19,7 @@ import { toFavListSummaryDto } from 'src/mappers/favList/fav-list.summary.mapper
 
 import { FavoriteListService } from 'src/services/fav-list.service';
 
-@Controller('favorites/list')
+@Controller('favorites/lists')
 export class FavListsController {
   constructor(private readonly lists: FavoriteListService) {}
 
