@@ -1,5 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { StockEntity } from './stock.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'financial_ratios' })
 export class FinancialRatioEntity {
@@ -42,7 +41,7 @@ export class FinancialRatioEntity {
   stock_date: Date | null;
 
   //? Relation avec la table stocks
-  @ManyToOne(() => StockEntity, (s) => s.ratios, { onDelete: 'CASCADE', nullable: false })
-  @JoinColumn({ name: 'id_stocks' })
-  stock: StockEntity;
+  // @ManyToOne(() => StockEntity, (s) => s.ratios, { onDelete: 'CASCADE', nullable: false })
+  // @JoinColumn({ name: 'id_stocks' })
+  // stock: StockEntity;
 }

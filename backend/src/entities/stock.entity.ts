@@ -1,16 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  OneToMany,
-  JoinColumn,
-  Index,
-} from 'typeorm';
-import { CurrencyEntity } from './currency.entity';
-import { StockExchangeEntity } from './stock-exchange.entity';
-import { FinancialRatioEntity } from './financial-ratios.entity';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity({ name: 'stocks' })
 export class StockEntity {
@@ -37,20 +25,20 @@ export class StockEntity {
   @CreateDateColumn({ type: 'datetime2' })
   created_at: Date;
 
-  // N -> 1 : currency
-  @ManyToOne(() => CurrencyEntity, (c) => c.stocks, { nullable: false, onDelete: 'NO ACTION' })
-  @JoinColumn({ name: 'id_currencies' })
-  currency: CurrencyEntity;
+  // // N -> 1 : currency
+  // @ManyToOne(() => CurrencyEntity, (c) => c.stocks, { nullable: false, onDelete: 'NO ACTION' })
+  // @JoinColumn({ name: 'id_currencies' })
+  // currency: CurrencyEntity;
 
-  // N -> 1 : stock exchange
-  @ManyToOne(() => StockExchangeEntity, (se) => se.stocks, {
-    nullable: false,
-    onDelete: 'NO ACTION',
-  })
-  @JoinColumn({ name: 'id_stock_exchanges' })
-  exchange: StockExchangeEntity;
+  // // N -> 1 : stock exchange
+  // @ManyToOne(() => StockExchangeEntity, (se) => se.stocks, {
+  //   nullable: false,
+  //   onDelete: 'NO ACTION',
+  // })
+  // @JoinColumn({ name: 'id_stock_exchanges' })
+  // exchange: StockExchangeEntity;
 
-  // 1 -> N : financial ratios
-  @OneToMany(() => FinancialRatioEntity, (r) => r.stock, { cascade: false })
-  ratios: FinancialRatioEntity[];
+  // // 1 -> N : financial ratios
+  // @OneToMany(() => FinancialRatioEntity, (r) => r.stock, { cascade: false })
+  // ratios: FinancialRatioEntity[];
 }

@@ -54,7 +54,7 @@ export class FavoriteListService {
   async getMyDetailedLists(userId: string): Promise<FavListDto[]> {
     const lists = await this.favRepo.find({
       where: { user: { id: userId } },
-      relations: ['favoriteStocks', 'favoriteStock.stock'],
+      relations: ['favoriteStocks', 'favoriteStocks.stock'],
       order: { id_favorites: 'DESC' },
     });
 
