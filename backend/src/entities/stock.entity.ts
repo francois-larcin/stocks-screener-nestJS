@@ -20,27 +20,25 @@ export class StockEntity {
   id!: string;
 
   @Index('UQ_stocks_symbol', { unique: true })
-  @Column({ length: 20 })
+  @Column({ type: 'varchar', length: 20 }) // 👈 type explicite
   symbol!: string;
 
-  @Column({ length: 255 })
-  name!: string; // fallback = symbol tant que non enrichi
+  @Column({ type: 'varchar', length: 255 }) // 👈
+  name!: string;
 
-  @Column({ length: 100, nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true }) // 👈 (évite "Object")
   sector!: string | null;
 
-  @Column({ length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true }) // 👈
   industry!: string | null;
 
-  // DECIMAL: TypeORM renvoie une string côté Node (normal)
   @Column({ type: 'decimal', precision: 18, scale: 2, nullable: true })
-  market_cap!: string | null;
+  market_cap!: string | null; // TypeORM renvoie string pour DECIMAL
 
-  // --- Affichage / enrichissement léger ---
-  @Column({ default: false })
+  @Column({ type: 'bit', default: false }) // 👈 bool → bit en MSSQL
   enriched!: boolean;
 
-  @Column({ type: 'datetime2', nullable: true })
+  @Column({ type: 'datetime2', nullable: true }) // 👈
   enriched_at!: Date | null;
 
   @Column({ type: 'decimal', precision: 18, scale: 6, nullable: true })
@@ -49,7 +47,6 @@ export class StockEntity {
   @Column({ type: 'datetime2', nullable: true })
   last_price_at!: Date | null;
 
-  // --- Relations optionnelles (ajout depuis favoris sans API externe) ---
   @ManyToOne(() => CurrencyEntity, (c) => c.stocks, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'id_currencies' })
   currency!: CurrencyEntity | null;
@@ -59,9 +56,8 @@ export class StockEntity {
   exchange!: StockExchangeEntity | null;
 
   @OneToMany(() => FinancialRatioEntity, (r) => r.stock, { cascade: false })
-  ratios!: FinancialRatioEntity[]; // chargés quand nécessaire
+  ratios!: FinancialRatioEntity[];
 
-  // --- Traces ---
   @CreateDateColumn({ type: 'datetime2' })
   created_at!: Date;
 

@@ -47,7 +47,7 @@ export class FavoriteListService {
       relations: ['favoriteStocks'], //* compter nbr actions via length
       order: { id_favorites: 'DESC' },
     });
-    return lists.map(toFavListSummaryDto);
+    return lists.map(toFavListSummaryDto); //* mapper dans le service
   }
 
   //? (USER) Retourner ses propres listes détaillées avec toutes les actions

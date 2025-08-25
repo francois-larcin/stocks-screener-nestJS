@@ -25,7 +25,7 @@ export class FavStockService {
     const existing = await this.stockRepo.findOne({ where: { symbol: sym } });
     if (existing) return existing;
 
-    //* 2) crée minimal, avec valeurs par défaut compatibles front
+    //* 2) crée une action minimale, avec valeurs par défaut compatibles front
     const draft = this.stockRepo.create({
       symbol: sym,
       name: sym, // remplacé plus tard par le vrai nom via provider
@@ -51,48 +51,63 @@ export class FavStockService {
     }
   }
 
-  //?  Ajouter une action dans une liste
+  //? helper pour éviter de dupliquer le lookup
+  private async findStockBySymbol(symbol: string): Promise<StockEntity | null> {
+    const sym = symbol.trim().toUpperCase();
+    return this.stockRepo.findOne({ where: { symbol: sym } });
+  }
+
+  // ? Ajouter une action dans une liste
   async addStockToList(
     userId: string,
     listId: number,
     dto: AddDeleteFavoriteDto,
   ): Promise<FavAddedResultDto> {
+    // 1) vérifier la liste du user
     const fav = await this.favRepo.findOne({
       where: { id_favorites: listId, user: { id: userId } },
     });
     if (!fav) throw new NotFoundException('Favorite list not found');
 
+    // 2) garantir l’existence du stock (création minimale si besoin)
     const stock = await this.upsertStockBySymbol(dto.symbol);
 
+    // 3) éviter doublon dans la liste
     const exists = await this.favStockRepo.findOne({
       where: { favorite: { id_favorites: fav.id_favorites }, stock: { id: stock.id } },
     });
     if (exists) throw new ConflictException(`Stock ${dto.symbol} already in list`);
 
+    // 4) créer le lien
     const link = this.favStockRepo.create({ favorite: fav, stock });
     await this.favStockRepo.save(link);
 
     return addedResult(fav.id_favorites, stock.symbol, true);
   }
 
-  //? Retirer une action d’une liste
+  // ? Retirer une action d’une liste
   async removeStockFromList(
     userId: string,
     listId: number,
     dto: AddDeleteFavoriteDto,
   ): Promise<FavRemovedResultDto> {
+    // 1) vérifier la liste du user
     const fav = await this.favRepo.findOne({
       where: { id_favorites: listId, user: { id: userId } },
     });
     if (!fav) throw new NotFoundException('Favorite list not found');
 
-    const stock = await this.upsertStockBySymbol(dto.symbol);
+    // 2) NE PAS créer si absent : juste chercher
+    const stock = await this.findStockBySymbol(dto.symbol);
+    if (!stock) throw new NotFoundException(`Stock ${dto.symbol} not found`);
 
+    // 3) vérifier le lien dans la liste
     const link = await this.favStockRepo.findOne({
       where: { favorite: { id_favorites: fav.id_favorites }, stock: { id: stock.id } },
     });
     if (!link) throw new NotFoundException(`Stock ${dto.symbol} not in list`);
 
+    // 4) supprimer le lien
     await this.favStockRepo.remove(link);
 
     return removedResult(fav.id_favorites, stock.symbol, true);

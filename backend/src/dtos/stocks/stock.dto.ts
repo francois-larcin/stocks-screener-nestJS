@@ -8,4 +8,21 @@ export class StockDto {
   id!: string;
   symbol!: string;
   name!: string;
+
+  //* Champs d’affichage simples
+  enriched!: boolean;
+  enrichedAt!: Date | null;
+
+  //* Prix simplifié
+  lastPrice!: number | null;
+  lastPriceAt!: Date | null;
+
+  //* Métadonnées optionnelles
+  sector!: string | null;
+  industry!: string | null;
+  marketCap!: number | null;
+
+  //* Relations résumées
+  currency?: string | null; // ex: "USD"
+  exchange?: string | null; // ex: "NASDAQ"
 }
