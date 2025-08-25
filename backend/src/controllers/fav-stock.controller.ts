@@ -29,13 +29,13 @@ export class FavStockController {
 
   //? Retirer une action (symbol dans le body)
 
-  @Delete()
+  @Delete(':symbol')
   async remove(
     @SessionUser('id') userId: string,
     @Param('listId', ParseIntPipe) listId: number,
-    @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }))
-    dto: AddDeleteFavoriteDto,
+    @Param('symbol', new ValidationPipe({ transform: true }))
+    symbol: AddDeleteFavoriteDto['symbol'],
   ) {
-    return this.stocks.removeStockFromList(userId, listId, dto);
+    return this.stocks.removeStockFromList(userId, listId, { symbol });
   }
 }
