@@ -1,9 +1,11 @@
 // src/pages/Favorites/IndexPage.tsx
+import { useNavigate } from "react-router-dom";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { useFavLists } from "../../hooks/favorites/useFavLists";
 
 export default function FavoritesIndexPage() {
   const { lists, loading, clearList, deleteList } = useFavLists();
+  const navigate = useNavigate();
 
   if (loading) return <div>Chargement…</div>;
 
@@ -18,25 +20,34 @@ export default function FavoritesIndexPage() {
           {lists.map((l) => (
             <li
               key={l.id}
-              className="flex items-center justify-between bg-white rounded-full shadow p-3"
+              className="flex items-center justify-between bg-white rounded-full shadow p-3 cursor-pointer hover:shadow-md transition"
+              onClick={() => navigate(`/favorites/${l.id}`)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) =>
+                (e.key === "Enter" || e.key === " ") &&
+                navigate(`/favorites/${l.id}`)
+              }
             >
-              {/* Nom de la liste */}
-              <span className="font-medium">{l.name}</span>
+              {/* Clic sur le libellé => navigation */}
+              <span className="font-medium truncate">{l.name}</span>
 
-              {/* Actions à droite */}
-              <div className="flex gap-2">
+              {/* Boutons à droite — on empêche la propagation pour ne PAS naviguer */}
+              <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                 <ConfirmButton
                   label="Vider"
                   color="yellow"
+                  message="Vider cette liste ?"
                   onConfirm={() => clearList(l.id)}
                   title={""}
                 />
                 <ConfirmButton
                   label="Supprimer"
                   color="red"
-                  size="sm"
                   message="Supprimer définitivement ?"
-                  onConfirm={() => deleteList(l.id)} title={""}                />
+                  onConfirm={() => deleteList(l.id)}
+                  title={""}
+                />
               </div>
             </li>
           ))}
