@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 import { ConfirmButton } from "../components/ConfirmButton";
 import { useProfile } from "../hooks/user/useProfile";
+import { Button } from "../components";
 
 export default function DashboardPage() {
   const { user, loading } = useProfile();
@@ -19,6 +20,13 @@ export default function DashboardPage() {
     <div className="p-6">
       <h1 className="text-3xl font-bold">Bienvenue sur votre Dashboard 🎉</h1>
       <p className="mt-4 text-gray-600">Voici un aperçu de votre activité.</p>
+
+      {/* Raccourcis vers les Favoris */}
+      <div className="flex gap-3">
+        <Button label="Mes listes de favoris" to="/favorites" color="blue" />
+        {/* Si tu veux un exemple direct vers une liste précise (remplace :id) */}
+        {/* <Button label="Ouvrir la liste #1" to="/favorites/1" color="yellow" /> */}
+      </div>
 
       <ConfirmButton
         label="Se déconnecter"

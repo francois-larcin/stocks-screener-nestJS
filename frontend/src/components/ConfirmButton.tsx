@@ -5,6 +5,7 @@ import { Modal } from "./Modal";
 type ConfirmButtonProps = {
   label: string;
   color?: "red" | "blue" | "green" | "orange" | "yellow";
+  size?: "sm" | "md" | "lg";
   title: string;
   message?: string;
   onConfirm: () => void | Promise<void>;
@@ -13,6 +14,7 @@ type ConfirmButtonProps = {
 export function ConfirmButton({
   label,
   color = "blue",
+  size = "md",
   title,
   message,
   onConfirm,
@@ -21,7 +23,12 @@ export function ConfirmButton({
 
   return (
     <>
-      <Button label={label} color={color} onClick={() => setOpen(true)} />
+      <Button
+        label={label}
+        color={color}
+        size={size}
+        onClick={() => setOpen(true)}
+      />
       <Modal
         isOpen={open}
         title={title}
