@@ -5,7 +5,8 @@ import LoginForm from "../pages/Auth/LoginForm";
 import RegisterForm from "../pages/Auth/RegisterForm";
 import RequireAuth from "./RequireAuth";
 import DashboardPage from "../pages/Dashboard";
-import FavoritesPage from "../pages/FavoritesPage";
+import FavPage from "../pages/Favorites/FavPage";
+import FavDetailPage from "../pages/Favorites/FavDetailPage";
 
 
 export default function AppRouter() {
@@ -19,7 +20,8 @@ export default function AppRouter() {
       {/* Pages protégées */}
       <Route element={<RequireAuth />}>
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/favorites" element={<FavoritesPage/>}></Route>
+        <Route path="/favorites" element={<FavPage />}></Route>
+        <Route path="/favorites/:id" element={<FavDetailPage />}></Route>
       </Route>
 
       {/* 404 */}
