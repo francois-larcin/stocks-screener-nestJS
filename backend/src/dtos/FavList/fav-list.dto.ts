@@ -11,7 +11,7 @@ export class FavListDto {
   stocks!: StockDto[];
 }
 
-//? Retourner une liste de favoris AVEC les actions la composant en sachant de User elle vient
+//? Retourner une liste de favoris AVEC les actions la composant en sachant de quel User elle vient
 export class AdminFavListDto extends FavListDto {
   ownerId!: string;
 }

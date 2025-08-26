@@ -1,5 +1,5 @@
 //* Mon API --> Client
-//? Retourner une liste de favoris sans entrer dans le détail
+//? Retourner des listes de favoris sans détail des actions les composant
 
 export class FavListSummaryDto {
   id!: number;

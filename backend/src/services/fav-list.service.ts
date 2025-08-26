@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FavListSummaryDto } from 'src/dtos/favList/fav-list-summary.dto';
 import { AdminFavListDto, FavListDto } from 'src/dtos/favList/fav-list.dto';
@@ -38,6 +38,22 @@ export class FavoriteListService {
     });
 
     return this.favRepo.save(fav);
+  }
+
+  //? Retourner une de ses propres listes en détail
+
+  async getOneDetailedList(userId: string, listId: number): Promise<FavoriteEntity> {
+    const ent = await this.favRepo.findOne({
+      where: { id_favorites: listId, user: { id: userId } },
+      relations: [
+        'favoriteStocks',
+        'favoriteStocks.stock',
+        'favoriteStocks.stock.currency',
+        'favoriteStocks.stock.exchange',
+      ],
+    });
+    if (!ent) throw new NotFoundException('Favorite list not found');
+    return ent;
   }
 
   //? Retourner ses propres listes sans le détail des actions

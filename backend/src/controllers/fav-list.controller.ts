@@ -13,8 +13,10 @@ import {
 import { RequireRoles } from 'src/decorators/require-role.decorator';
 import { SessionUser } from 'src/decorators/session.decorator';
 import { CreateFavListDto } from 'src/dtos/favList/create-fav-list.dto';
+import { ListIdParamDto } from 'src/dtos/favList/list-id.param.dto';
 import { ConnectedGuard } from 'src/guards/connected.guard';
 import { RequireRolesGuard } from 'src/guards/require-role.guard';
+import { toFavListDto } from 'src/mappers/favList/fav-list.mapper';
 import { toFavListSummaryDto } from 'src/mappers/favList/fav-list.summary.mapper';
 
 import { FavoriteListService } from 'src/services/fav-list.service';
@@ -24,6 +26,16 @@ export class FavListsController {
   constructor(private readonly lists: FavoriteListService) {}
 
   //! ------------------------------------------USER--------------------------------------
+
+  //? Résumé d'UNE SEULE de MES liste (avec détail des actions)
+  @Get(':id')
+  async getOne(
+    @SessionUser('id') userId: string,
+    @Param(new ValidationPipe({ transform: true })) params: ListIdParamDto,
+  ) {
+    const ent = await this.lists.getOneDetailedList(userId, params.id);
+    return toFavListDto(ent);
+  }
 
   //? Résumé de MES listes (sans détail des actions)
   @Get('me/summary')
