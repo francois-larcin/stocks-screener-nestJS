@@ -41,7 +41,7 @@ export function Modal({
 }: ModalProps) {
   //? Fermer avec la touche Escape
   useEffect(() => {
-    if (!open) {
+    if (!isOpen) {
       return;
     }
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && cancelFn();
