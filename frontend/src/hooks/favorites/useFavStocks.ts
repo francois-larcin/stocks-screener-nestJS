@@ -24,7 +24,7 @@ export function useFavStocks(listId?: number) {
   const [error, setError] = useState<string | null>(null);
 
   const reload = useCallback(async () => {
-    if (listId) return;
+    if (!listId) return;
     setError(null);
     const { data } = await api.get<FavListDetailed>(
       `/favorites/lists/${listId}`
