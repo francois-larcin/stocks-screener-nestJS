@@ -2,14 +2,16 @@ import { useParams } from "react-router-dom";
 import { useFavStocks } from "../../hooks/favorites/useFavStocks";
 import { Button } from "../../components";
 
-
 export default function FavoriteDetailPage() {
   const { id } = useParams();
   const listId = Number(id);
   const { list, loading, removeSymbol } = useFavStocks(listId);
 
   if (loading) return <div>Chargement…</div>;
-  if (!list) return <div>Liste introuvable</div>;
+  if (!list) {
+    console.log("DetailPage: id param =", id, "→ listId =", listId);
+    return <div>Liste introuvable</div>;
+  }
 
   return (
     <div>
