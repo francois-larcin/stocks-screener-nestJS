@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Button } from "./Button";
 import { Modal } from "./Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+<FontAwesomeIcon icon={["fas", "trash-can"]} />;
+<FontAwesomeIcon icon={["fas", "arrows-spin"]} />;
 
 type ConfirmButtonProps = {
-  label: string;
+  label: React.ReactNode; //? Autoriser format JSX pour les icônes
   color?: "red" | "blue" | "green" | "orange" | "yellow";
   size?: "sm" | "md" | "lg";
   title: string;

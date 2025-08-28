@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+<FontAwesomeIcon icon={["fas", "trash-can"]} />;
+<FontAwesomeIcon icon={["far", "heart"]} />;
 
 type ButtonColor = "red" | "blue" | "green" | "orange" | "yellow";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps = {
-  label: string;
+  label: React.ReactNode; //? Autoriser format JSX pour les icônes
   color?: ButtonColor;
   size?: ButtonSize;
   type?: "button" | "submit" | "reset";
@@ -12,6 +16,8 @@ type ButtonProps = {
   disabled?: boolean;
   fullWidth?: boolean;
   to?: string; //* Permet la navigation
+  title?: string; //* Accessibilité
+  ariaLabel?: string; //* Accessibilité
 };
 
 const colorClasses: Record<ButtonColor, string> = {
@@ -37,19 +43,21 @@ export function Button({
   disabled = false,
   fullWidth = false,
   to,
+  title,
+  ariaLabel,
 }: ButtonProps) {
   const classes = `
-        ${colorClasses[color]}
-        ${sizeClasses[size]}
-        rounded-lg transition
-        ${fullWidth ? "w-full" : ""}
-        ${disabled ? "opacity-50 cursor-not-allowed" : ""}`;
-
-  //* Si to === true alors on rend un <Link> sinon un <button>
+    ${colorClasses[color]}
+    ${sizeClasses[size]}
+    rounded-lg transition
+    inline-flex items-center justify-center gap-2
+    ${fullWidth ? "w-full" : ""}
+    ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+  `;
 
   if (to) {
     return (
-      <Link to={to} className={classes}>
+      <Link to={to} className={classes} title={title} aria-label={ariaLabel}>
         {label}
       </Link>
     );
@@ -61,6 +69,8 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       className={classes}
+      title={title}
+      aria-label={ariaLabel}
     >
       {label}
     </button>
