@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useFavStocks } from "../../hooks/favorites/useFavStocks";
 import { Button } from "../../components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function FavoriteDetailPage() {
   const { id } = useParams();
@@ -21,10 +22,12 @@ export default function FavoriteDetailPage() {
           <li key={s.id}>
             <strong>{s.symbol}</strong> — {s.name}
             <Button
-              label="Supprimer"
+              label={<FontAwesomeIcon icon={["fas", "trash-can"]} />}
               color="red"
-              size="sm"
+              size="md"
               onClick={() => removeSymbol(s.symbol)}
+              title="Supprimer"
+              ariaLabel="Supprimer"
             />
           </li>
         ))}

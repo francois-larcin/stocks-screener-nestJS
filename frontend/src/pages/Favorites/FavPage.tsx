@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { ConfirmButton } from "../../components/ConfirmButton";
 import { useFavLists } from "../../hooks/favorites/useFavLists";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function FavoritesIndexPage() {
   const { lists, loading, clearList, deleteList } = useFavLists();
@@ -35,14 +36,14 @@ export default function FavoritesIndexPage() {
               {/* Boutons à droite — on empêche la propagation pour ne PAS naviguer */}
               <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                 <ConfirmButton
-                  label="Vider"
+                  label={<FontAwesomeIcon icon={["fas", "arrows-spin"]} />}
                   color="yellow"
                   message="Vider cette liste ?"
                   onConfirm={() => clearList(l.id)}
                   title={""}
                 />
                 <ConfirmButton
-                  label="Supprimer"
+                  label={<FontAwesomeIcon icon={["fas", "trash-can"]} />}
                   color="red"
                   message="Supprimer définitivement ?"
                   onConfirm={() => deleteList(l.id)}

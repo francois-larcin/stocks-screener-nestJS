@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { ConfirmButton } from "../components/ConfirmButton";
 import { useProfile } from "../hooks/user/useProfile";
 import { Button } from "../components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function DashboardPage() {
   const { user, loading } = useProfile();
@@ -23,7 +24,16 @@ export default function DashboardPage() {
 
       {/* Raccourcis vers les Favoris */}
       <div className="flex gap-3">
-        <Button label="Mes listes de favoris" to="/favorites" color="blue" />
+        <Button
+          label={
+            <span className="flex items-center gap-2">
+              <FontAwesomeIcon icon={["far", "heart"]} />
+              Mes favoris
+            </span>
+          }
+          to="/favorites"
+          color="blue"
+        />
         {/* Si tu veux un exemple direct vers une liste précise (remplace :id) */}
         {/* <Button label="Ouvrir la liste #1" to="/favorites/1" color="yellow" /> */}
       </div>
