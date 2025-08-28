@@ -8,7 +8,7 @@ type ImageProps = {
   className?: string;
 };
 
-export function Image({
+export function ImagePerso({
   src,
   alt,
   width = "auto",
