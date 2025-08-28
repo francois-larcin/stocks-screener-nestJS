@@ -4,7 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 <FontAwesomeIcon icon={["fas", "trash-can"]} />;
 <FontAwesomeIcon icon={["far", "heart"]} />;
 
-type ButtonColor = "red" | "blue" | "green" | "orange" | "yellow";
+type ButtonColor =
+  | "red"
+  | "blue"
+  | "green"
+  | "orange"
+  | "yellow"
+  | "bull"
+  | "bear"
+  | "neutral";
 type ButtonSize = "sm" | "md" | "lg";
 
 type ButtonProps = {
@@ -26,6 +34,9 @@ const colorClasses: Record<ButtonColor, string> = {
   green: "bg-green-500 text-white hover:bg-green-600",
   orange: "bg-orange-500 text-white hover:bg-orange-600",
   yellow: "bg-yellow-400 text-black hover:bg-yellow-500",
+  bull: "bg-green-900 text-white hover:bg-green-800",
+  bear: "bg-red-900 text-white hover:bg-red-800",
+  neutral: "bg-slate-600 text-white hover:bg-slate-700",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {

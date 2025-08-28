@@ -6,7 +6,15 @@ type FormProps = {
   onSubmit: () => void | Promise<void>;
   children: React.ReactNode;
   submitLabel: string;
-  submitColor?: "red" | "blue" | "green" | "orange" | "yellow";
+  submitColor?:
+    | "red"
+    | "blue"
+    | "green"
+    | "orange"
+    | "yellow"
+    | "bull"
+    | "bear"
+    | "neutral";
 };
 
 export function Form({

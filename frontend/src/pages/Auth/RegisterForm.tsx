@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Form } from "../../components/Form";
 import { API_URL } from "../../config/api";
 import { Input } from "../../components/Input";
+import { ImagePerso } from "../../components/Image";
+import wallPaper from "../../assets/images/wallPaper.png";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
@@ -27,33 +29,43 @@ export default function RegisterForm() {
   };
 
   return (
-    <Form
-      title="Créer un compte"
-      onSubmit={handleRegister}
-      submitLabel="S'inscrire"
-      submitColor="green"
-    >
-      <Input
-        type="email"
-        value={email}
-        onChange={setEmail}
-        placeholder="Email"
-        required
+    <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+      <ImagePerso
+        src={wallPaper}
+        alt="Fond d'écran"
+        opacity={0.5}
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 scale-[0.97]"
       />
-      <Input
-        type="username"
-        value={username}
-        onChange={setUsername}
-        placeholder="Nom d'utilisateur"
-        required
-      />
-      <Input
-        type="password"
-        value={password}
-        onChange={setPassword}
-        placeholder="Mot de passe"
-        required
-      />
-    </Form>
+      <div className="z-10 w-full max-w-md px-6">
+        <Form
+          title="Créer un compte"
+          onSubmit={handleRegister}
+          submitLabel="S'inscrire"
+          submitColor="bull"
+        >
+          <Input
+            type="email"
+            value={email}
+            onChange={setEmail}
+            placeholder="Email"
+            required
+          />
+          <Input
+            type="username"
+            value={username}
+            onChange={setUsername}
+            placeholder="Nom d'utilisateur"
+            required
+          />
+          <Input
+            type="password"
+            value={password}
+            onChange={setPassword}
+            placeholder="Mot de passe"
+            required
+          />
+        </Form>
+      </div>
+    </div>
   );
 }

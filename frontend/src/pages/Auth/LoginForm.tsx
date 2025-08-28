@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { API_URL } from "../../config/api";
 import { Form } from "../../components/Form";
+import { ImagePerso } from "../../components/Image";
+import wallPaper from "../../assets/images/wallPaper.png";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -29,27 +31,38 @@ export default function LoginPage() {
   };
 
   return (
-    <Form
-      title="Connexion"
-      onSubmit={handleLogin}
-      submitLabel="Se connecter"
-      submitColor="blue"
-    >
-      <Input
-        type="credentials"
-        value={credentials}
-        onChange={setCredentials}
-        placeholder="Email ou nom d'utilisateur"
-        required
+    <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
+      <ImagePerso
+        src={wallPaper}
+        alt="Fond d'écran"
+        opacity={0.5}
+        className="absolute top-0 left-0 w-full h-full object-cover z-0 scale-[0.97]"
       />
 
-      <Input
-        type="password"
-        value={password}
-        onChange={setPassword}
-        placeholder="Mot de passe"
-        required
-      />
-    </Form>
+      <div className="z-10 w-full max-w-md px-6">
+        <Form
+          title="Connexion"
+          onSubmit={handleLogin}
+          submitLabel="Se connecter"
+          submitColor="bull"
+        >
+          <Input
+            type="credentials"
+            value={credentials}
+            onChange={setCredentials}
+            placeholder="Email ou nom d'utilisateur"
+            required
+          />
+
+          <Input
+            type="password"
+            value={password}
+            onChange={setPassword}
+            placeholder="Mot de passe"
+            required
+          />
+        </Form>
+      </div>
+    </div>
   );
 }
