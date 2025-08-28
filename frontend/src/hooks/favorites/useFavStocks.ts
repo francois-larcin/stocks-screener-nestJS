@@ -11,11 +11,22 @@ export type StockItem = {
   lastPriceAt: string | null;
 };
 
+export type StockItemFull = {
+  id: string;
+  symbol: string;
+  name: string;
+  rating?: number | null;
+  exchange?: string | null;
+  country?: string | null;
+  sector?: string | null;
+  marketCap?: number | null;
+};
+
 export type FavListDetailed = {
   id: number;
   name: string;
   createdAt: string;
-  stocks: StockItem[];
+  stocks: StockItemFull[];
 };
 
 export function useFavStocks(listId?: number) {
