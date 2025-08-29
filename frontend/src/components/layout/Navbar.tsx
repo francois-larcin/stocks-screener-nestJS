@@ -29,7 +29,8 @@ export default function Navbar() {
         <nav className="flex items-center gap-6 ml-4">
           <NavLink to="/dashboard">Dashboard</NavLink>
           <NavLink to="/favorites">Favoris</NavLink>
-          <NavLink to="/backtest">Backtest</NavLink>
+          <NavLink to="/backtest">Simulation</NavLink>
+          <NavLink to="/dividends">Dividendes</NavLink>
         </nav>
 
         {/* Barre de recherche */}

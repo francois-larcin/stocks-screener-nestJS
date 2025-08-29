@@ -7,7 +7,9 @@ import RequireAuth from "./RequireAuth";
 import DashboardPage from "../pages/Dashboard";
 import FavPage from "../pages/Favorites/FavPage";
 import FavDetailPage from "../pages/Favorites/FavDetailPage";
-
+import AppLayout from "../components/layout/Layout.Navbar";
+import Backtest from "../pages/BackTest/Backtest";
+import Dividends from "../pages/Dividends/Dividends";
 
 export default function AppRouter() {
   return (
@@ -19,9 +21,13 @@ export default function AppRouter() {
 
       {/* Pages protégées */}
       <Route element={<RequireAuth />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/favorites" element={<FavPage />}></Route>
-        <Route path="/favorites/:id" element={<FavDetailPage />}></Route>
+        <Route element={<AppLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/favorites" element={<FavPage />}></Route>
+          <Route path="/favorites/:id" element={<FavDetailPage />}></Route>
+          <Route path="/backtest" element={<Backtest />} />
+          <Route path="/dividends" element={<Dividends />} />
+        </Route>
       </Route>
 
       {/* 404 */}
