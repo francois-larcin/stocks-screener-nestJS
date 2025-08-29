@@ -29,7 +29,7 @@ export default function LandingPage() {
           onClick={() => navigate("/login")}
         />
         <Button
-          label="Pas encore de compte ?"
+          label="Créer un compte"
           color="bear"
           onClick={() => navigate("/register")}
         />
