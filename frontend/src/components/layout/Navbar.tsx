@@ -2,6 +2,9 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import logo from "../../assets/images/logo2.png";
+import { ImagePerso } from "../Image";
 
 export default function Navbar() {
   const [input, setInput] = useState("");
@@ -21,16 +24,29 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-indigo-500" />
-          <span className="font-semibold">StockScreener</span>
+          <ImagePerso
+            src={logo}
+            alt="logo"
+            opacity={1}
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <span className="font-semibold text-black-600 text-lg">
+            Praestora
+          </span>
         </div>
 
         {/* Navigation */}
         <nav className="flex items-center gap-6 ml-4">
           <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/favorites">Favoris</NavLink>
+
           <NavLink to="/backtest">Simulation</NavLink>
           <NavLink to="/dividends">Dividendes</NavLink>
+          <NavLink to="/favorites">
+            Favoris{" "}
+            <span>
+              <FontAwesomeIcon icon={["far", "heart"]} />
+            </span>
+          </NavLink>
         </nav>
 
         {/* Barre de recherche */}
