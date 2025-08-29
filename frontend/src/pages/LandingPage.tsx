@@ -1,7 +1,7 @@
 import { Button } from "../components";
 import { useNavigate } from "react-router";
 import { ImagePerso } from "../components/Image";
-import wallPaper from "../../assets/images/wallPaper.png";
+import wallPaper from "../../src/assets/images/wallPaper.png";
 
 export default function LandingPage() {
   const navigate = useNavigate();
