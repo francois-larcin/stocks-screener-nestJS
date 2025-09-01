@@ -7,7 +7,7 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { FavoriteModule } from './modules/favorites/fav.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StockModule } from './modules/stock/stock.module';
-import { HttpModule } from '@nestjs/axios';
+
 
 @Module({
   imports: [
@@ -35,8 +35,6 @@ import { HttpModule } from '@nestjs/axios';
       synchronize: true, //* Crée automatiquement les tables
       autoLoadEntities: true,
     }),
-
-    HttpModule.register({ timeout: 5000 }),
 
     AuthModule,
     FavoriteModule,
