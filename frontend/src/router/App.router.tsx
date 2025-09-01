@@ -1,5 +1,5 @@
 // src/App.router.tsx
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import LoginForm from "../pages/Auth/LoginForm";
 import RegisterForm from "../pages/Auth/RegisterForm";
@@ -10,8 +10,21 @@ import FavDetailPage from "../pages/Favorites/FavDetailPage";
 import AppLayout from "../components/layout/Layout.Navbar";
 import Backtest from "../pages/BackTest/Backtest";
 import Dividends from "../pages/Dividends/Dividends";
+import { useEffect } from "react";
+import { clearAuth } from "../utils/auth";
 
 export default function AppRouter() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleLogout = () => {
+      clearAuth();
+      navigate("/login");
+    };
+    window.addEventListener("auth:logout", handleLogout);
+    return () => window.removeEventListener("auth:logout", handleLogout);
+  }, [navigate]);
+
   return (
     <Routes>
       {/* Pages publiques */}
