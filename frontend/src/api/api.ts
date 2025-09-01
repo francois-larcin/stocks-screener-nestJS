@@ -1,6 +1,5 @@
 import axios from "axios";
-import { getToken, clearAuth } from "../utils/auth";
-import { useNavigate } from "react-router";
+import { getToken } from "../utils/auth";
 
 //* Creation d'une instance Axios utilisée pour tous les appels HTTP
 
@@ -24,9 +23,7 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      const navigate = useNavigate();
-      clearAuth();
-      navigate("/login");
+      window.dispatchEvent(new Event("auth:logout"));
     }
     return Promise.reject(err);
   }
