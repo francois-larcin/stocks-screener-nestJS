@@ -29,10 +29,10 @@ import { HttpModule } from '@nestjs/axios';
       password: process.env.DB_PASSWORD,
       options: {
         encrypt: true,
-        trustServerCertificate: true, // utile pour local
+        trustServerCertificate: true, //* utile pour local
       },
       logging: true,
-      synchronize: true, // ⚠️ Crée automatiquement les tables
+      synchronize: true, //* Crée automatiquement les tables
       autoLoadEntities: true,
     }),
 

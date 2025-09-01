@@ -37,9 +37,20 @@ export class FinancialRatioEntity {
   @Column({ type: 'decimal', precision: 18, scale: 2, nullable: true })
   capex: string | null;
 
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) price_to_book?: number;
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) price_to_sales?: number;
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) return_on_equity?: number;
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) return_on_assets?: number;
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) dividend_yield?: number;
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) profit_margin?: number;
+  @Column('decimal', { precision: 18, scale: 6, nullable: true }) debt_to_equity?: number;
+
   @Column({ type: 'datetime2', nullable: true })
   //* date/heure de la valeur boursière ou du cours associé à ces ratios.
   stock_date: Date | null;
+
+  @Column({ type: 'datetime2', default: () => 'GETDATE()' })
+  fetched_at: Date;
 
   //? Relation avec la table stocks
   @ManyToOne(() => StockEntity, (s) => s.ratios, { onDelete: 'CASCADE', nullable: false })
