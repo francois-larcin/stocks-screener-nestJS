@@ -14,5 +14,5 @@ export class StockExchangeEntity {
 
   //? Relation avec la table stocks
   @OneToMany(() => StockEntity, (s) => s.exchange)
-  stocks: StockEntity;
+  stocks: StockEntity[];
 }

@@ -5,6 +5,7 @@ import { FinancialRatioEntity } from 'src/entities/financial-ratios.entity';
 import { StockEntity } from 'src/entities/stock.entity';
 import { HttpModule } from '@nestjs/axios';
 import { StockPriceDailyEntity } from 'src/entities/stock-price-daily.entity';
+import { StockExchangeEntity } from 'src/entities/stock-exchange.entity';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { StockPriceDailyEntity } from 'src/entities/stock-price-daily.entity';
       StockEntity,
       FinancialRatioEntity,
       CurrencyEntity,
+      StockExchangeEntity,
       StockPriceDailyEntity,
     ]),
   ],
