@@ -1,4 +1,6 @@
 //? v = valeur brute
+//? o = objet
+//? anyO = un objet unknown dont on sait qu'il possède des propriétés de type string et des valeurs correspondantes de type unknown
 
 //* S'assurer qu'une valeur est bien numérique et cohérente
 //* Renvoit 0 en cas d'échec et évite les NaN
