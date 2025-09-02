@@ -8,7 +8,6 @@ import { FavoriteModule } from './modules/favorites/fav.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StockModule } from './modules/stock/stock.module';
 
-
 @Module({
   imports: [
     // Charger les variables d'environnement
